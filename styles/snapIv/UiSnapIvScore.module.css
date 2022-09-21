@@ -1,0 +1,47 @@
+.container {
+  display: grid;
+  gap: 0;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-items: center;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  border: 0.5px solid rgb(11, 11, 11);
+  border-right: none;
+  background: rgb(42, 231, 23);
+  background: linear-gradient(
+    90deg,
+    rgba(42, 231, 23, 1) 0%,
+    rgba(238, 203, 66, 1) 18%,
+    rgba(255, 0, 0, 1) 100%
+  );
+  width: 100%;
+  height: 35px;
+}
+
+.score {
+  border-width: 0 0.5px 0 0;
+  border-color: rgb(11, 11, 11);
+  color: rgba(11, 11, 11, 70%);
+  border-style: solid;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.score.division {
+  font-weight: 600;
+  font-size: 1em;
+  color: black;
+}
+
+.score.selected {
+  background: transparent;
+  width: 25px;
+  height: 25px;
+  border: 3px solid black;
+  border-radius: 50%;
+  color: black;
+  font-weight: 600;
+  font-size: 1em;
+}

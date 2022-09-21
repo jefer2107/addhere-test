@@ -1,0 +1,205 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// schema.prisma
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                 String    @id @default(cuid())
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id])
+
+  @@unique([providerId, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  expires      DateTime
+  sessionToken String   @unique
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id            String     @id @default(cuid())
+  name          String?
+  email         String?    @unique
+  emailVerified DateTime?
+  image         String?
+  city          String?
+  state         String?
+  documentNum   String?
+  documentType  String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  posts         Post[]
+  Role          Role?      @relation(fields: [roleId], references: [id])
+  roleId        Int?
+  Company       Company[]
+  SnapIv        SnapIv[]
+  CoreCare      CoreCare[]
+}
+
+model VerificationRequest {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
+}
+
+// schema.prisma
+
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User?   @relation(fields: [authorId], references: [id])
+  authorId  String?
+}
+
+model Role {
+  id       Int        @id @default(autoincrement())
+  title    String
+  people   User[]
+  CoreCare CoreCare[]
+}
+
+model Company {
+  id            Int         @id @default(autoincrement())
+  name          String
+  companyType   CompanyType @relation(fields: [companyTypeId], references: [id])
+  companyTypeId Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  createdBy     User        @relation(fields: [userId], references: [id])
+  userId        String
+  location      String
+  city          String
+  stateRegion   String?
+  county        String?
+  SnapIv        SnapIv[]
+}
+
+model CompanyType {
+  id      Int       @id @default(autoincrement())
+  title   String
+  Company Company[]
+}
+
+model Intensity {
+  id    Int    @id @default(autoincrement())
+  title String
+}
+
+model SnapIv {
+  id                        Int      @id @default(autoincrement())
+  Patient                   Patient  @relation(fields: [patientId], references: [id])
+  patientId                 Int
+  User                      User     @relation(fields: [userId], references: [id])
+  userId                    String
+  Company                   Company? @relation(fields: [companyId], references: [id])
+  companyId                 Int?
+  companyName               String?
+  professionalType          String?
+  professionalName          String?
+  city                      String?
+  state                     String?
+  // Não consegue prestar muita atenção a detalhes ou comete erros por descuido nos trabalhos da escola ou tarefas:
+  attentionToDetailsId      Int
+  // Tem dificuidade de mater a atenção em defesas ou atividades de lazer:
+  attentionOnLeisureId      Int
+  // Parece não estar ouvindo quando se fala diretamente com ele:
+  attentionOnListeningId    Int
+  // Não segue instruções até o fim e não ternima deveres de escola, tarefas ou obrigações:
+  followInstructionsId      Int
+  // Tem dificuldade para organizar tarefas e atividades:
+  difficultOnOrganizingId   Int
+  // Evita, não gosta ou se envolve contra a vontade em tarefas que exigem esforço mental prolongado:
+  difficultOnMentalEffortId Int
+  // Perde coisas necessários para atividades (Ex: brinquedos, deveres da escola, lápis ou livros):
+  toolsLostId               Int
+  // Distrai-se com estimulos externos:
+  distractionOnStimuliId    Int
+  // É esquecido em atividades do dia-a-dia:
+  workMemoryDeficitId       Int
+  // Mexe com as mãos ou os pés ou se remexe na cadeira:
+  feetHandsMovementId       Int
+  // Sai do lugar na sala de aula ou em outras situações em que se espera que fique sentado:
+  classroomLeavesId         Int
+  // Corre de um lado para outro ou sobre demais não coisas em situações em que isto é inapropriado:
+  runningId                 Int
+  // Tem dificuidade em brincar ou envolver-se em atividades de lazer de forma calma:
+  inquietudeId              Int
+  // Não para ou frequêntemente está a "mil por hora":
+  nonStoppableId            Int
+  // Responde as perguntas de forma precipitada antes delas terem sido terminadas:
+  rushToAnswerId            Int
+  // Tem dificuldade de esperar sua vez:
+  turnWaitingId             Int
+  notes                     String
+  score                     Float
+  // Intensity            Intensity @relation(fields: [attentionToDetailsId, attentionOnLeisureId], references: [id, id])
+  // Escola
+  // IdEscola
+  // Nascimento
+  // Observações:
+  // Fala em excesso:
+  // UsuárioExecutor:
+  // IdEducador
+  // IdProfissional
+  // Score
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+}
+
+model Patient {
+  id              Int        @id @default(autoincrement())
+  name            String
+  birthDate       DateTime
+  motherName      String
+  city            String
+  state           String
+  healthInsurance String
+  referenceDoctor String
+  image           String
+  CoreCare        CoreCare[]
+  SnapIv          SnapIv[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model CoreCare {
+  patientId Int
+  userId    String
+  User      User    @relation(fields: [userId], references: [id])
+  Patient   Patient @relation(fields: [patientId], references: [id])
+  Role      Role    @relation(fields: [roleId], references: [id])
+  roleId    Int
+
+  @@unique([userId, patientId])
+}

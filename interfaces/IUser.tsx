@@ -1,0 +1,31 @@
+export interface IUser {
+    // id: number;
+    // name: string;
+    // city: string;
+    // country: string;
+    // about: string;
+    // imgAvatar: IStrapiImg;
+    // bgImg: IStrapiImg;
+    // gallery: IStrapiImg[];
+    // phone: string;
+    // whatsapp: string;
+    // telegram: string;
+    // email: string;
+    // facebook: string;
+    usuarioNo: number;
+    categorias: string[];
+    nome: string;
+    imgUrl: string;
+    bgUrl: string;
+    dtCadastro: Date;
+    cidade: string;
+    pais: string;
+    email: string;
+    perfil: string;
+    isNewUser: boolean;
+    whatsapp?: string;
+    blWhatsapp?: boolean;
+    dtWhatsapp?: Date;
+    blPrivacy?: boolean;
+    dtPrivacy?: Date;
+}

@@ -1,0 +1,20 @@
+export enum EnSnapIvDisability {
+    idade = 'Idade',
+    percepcao = 'Auto-Percepção da Saúde',
+    avdi = 'AVD Instrumental',
+    avdb = 'AVD Básica',
+    cognicao = 'Cognição',
+    humor = 'Humor',
+    mobilidade = 'Mobilidade',
+    comunicacao = 'Comunicação',
+    comorbidade = 'Comorbidade Múltipla',
+    mmss = 'MMSS',
+    sarcopenia = 'Sarcopenia (Nutrição)',
+    marcha = 'Marcha (Quedas)',
+    continencia = 'Continência Esfincteriana',
+    visao = 'Visão',
+    audicao = 'Audição',
+    polifarmacia = 'Polifarmácia (≥  5 drogas/dia)',
+    polipatologia = 'Polipatologia (≥ 5 doenças)',
+    internacao = 'Internação Recente (< 6 meses)'
+}
